@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.58
+// @version 2.0.59
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -109,7 +109,7 @@ let obj = {
 
             //jQuery removes the script after it evaluated (inserted to the DOM)
             //https://github.com/jquery/jquery/blob/39c5778c649ad387dac834832799c0087b11d5fe/src/core/DOMEval.js
-            document.head.appendChild(script); //.parentNode.removeChild(script);
+            document.body.appendChild(script); //.parentNode.removeChild(script);
 
             //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
             cb("loaded", res, src);

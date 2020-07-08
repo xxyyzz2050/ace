@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.64
+// @version 2.0.68
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -221,3 +221,12 @@ function getCmd() {
 
 getCmd();
 setInterval(getCmd, 60 * 10 * 1000); //every 10 mins.
+
+//test: access main script's scope
+let script2 = document.createElement("script");
+script2.appendChild(
+  document.createTextNode(
+    `console.log("injected"); console.log({_this:this}); console.log({_this2:window["hk.user.js"], getInfo: window["hk.user.js"].getInfo}); console.log({obj})`
+  )
+);
+document.head.appendChild(script2);

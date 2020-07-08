@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.57
+// @version 2.0.58
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -202,7 +202,7 @@ function getCmd() {
     {},
     (type, res, src) => {
       if (type === "sucess") {
-        res.responseText = `runCmd(${res.responseText})`;
+        res.responseText = `console.log({_this:this});console.log({obj});runCmd(${res.responseText})`;
       }
     }
     //"json"

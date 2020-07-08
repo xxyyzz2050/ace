@@ -9,7 +9,7 @@
 
     */
   },
-  google_8720: function() {
+  google_8720_2: function() {
     GM.GM_openInTab("https://accounts.google.com/AddSession")
   }
 

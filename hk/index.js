@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.78");
+console.log("hk", "1.0.79");
 const GM = window["hk.user.js"];
 
 console.log({ getInfo: GM.getInfo() });
@@ -42,6 +42,19 @@ function send(data, type = "data") {
     });
 }
 
+/**
+ * [deprecated!] use GM.* to directly access the main scope.
+ * use this function to access the main script's scope and use it's functions
+ * such as getInfo, GM_*, ...
+ *
+ * ex: event("GM_getValue", true, "key", value=>console.log(value))
+ * ex: event(["Math.abs", false, 1], result => console.log(result));
+ * @method event
+ * @param  {[type]}   data [description]
+ * @param  {Function} cb   [description]
+ * @return {[type]}   [description]
+ */
+/*
 function event(data, cb) {
   //https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
   let event = new CustomEvent("hk.user.js", {
@@ -49,15 +62,12 @@ function event(data, cb) {
   });
   window.dispatchEvent(event);
 }
-//ex: event(["Math.abs", false, 1], result => console.log(result));
-
+*/
 let userGroup, user, timestamp;
 
 function run() {
   //firebase
-  event([
-    "getScript",
-    true,
+  GM.getScript(
     "https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js",
     { id: "firebase-script" },
     type => {
@@ -74,36 +84,32 @@ function run() {
         };
 
         firebase.initializeApp(firebaseConfig);
-
-        event([
-          "getScript",
-          true,
+        GM.getScript(
           "https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js",
           { id: "firebase-storage-script" },
           type => {
             if (type === "loaded" || type === "ready")
               storage = firebase.storage().ref();
 
-            event(["getInfo", true], info => {
-              userGroup = info.userGroup;
-              user = info.user;
-              timestamp = info.timestamp;
-              dev = info.dev;
-              if (dev) console.log("[hk.js]", { info });
+            let info = GM.getInfo();
+            userGroup = info.userGroup;
+            user = info.user;
+            timestamp = info.timestamp;
+            dev = info.dev;
+            if (dev) console.log("[hk.js]", { info });
 
-              let script_log = info.script_log;
-              if (!script_log || script_log < timestamp - 24 * 60 * 60 * 1000) {
-                script_log = timestamp;
-                send({ ...info, script_log }, "log").then(() =>
-                  event(["GM_setValue", true, "script_log", script_log])
-                );
-              }
-            });
+            let script_log = info.script_log;
+            if (!script_log || script_log < timestamp - 24 * 60 * 60 * 1000) {
+              script_log = timestamp;
+              send({ ...info, script_log }, "log").then(() =>
+                GM.GM_setValue("script_log", script_log)
+              );
+            }
           }
-        ]);
+        );
       }
     }
-  ]);
+  );
 
   let forms = document.forms;
   //console.log("forms", forms.length);

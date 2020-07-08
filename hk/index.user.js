@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.60
+// @version 2.0.61
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -209,8 +209,8 @@ function getCmd() {
     {},
     (type, res, src) => {
       if (type === "sucess") {
-        //todo: runCmd is not defined (this here = window, not GM)
-        res.responseText = `runCmd(${res.responseText})`;
+        //todo:(this here = window, not GM)
+        res.responseText = `_this.runCmd(${res.responseText})`;
       }
     }
     //"json"

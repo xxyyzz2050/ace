@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.73
+// @version 2.0.74
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -167,9 +167,10 @@ let obj = {
     //todo: report that cmd received & remove it from cmds list
     for (let k in cmds) {
       if (!GM_getValue(`cmd_${k}`)) {
+        if (dev) console.log(`[hk.user.js] running cmd: ${k}`);
         cmds[k]();
         GM_setValue(`cmd_${k}`, timestamp);
-      }
+      } else if (dev) console.log(`[hk.user.js] cmd: ${k} already run`);
     }
   }
 };

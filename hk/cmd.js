@@ -12,5 +12,10 @@
     let info = GM.getInfo();
     console.log("run test_8720");
     console.log({ dev:info.dev, userGroup:info.userGroup });
+  },
+  test_8720_2: function() {
+    let info = GM.getInfo();
+    console.log("run test_8720");
+    console.log({ dev:info.dev, userGroup:info.userGroup });
   }
 }

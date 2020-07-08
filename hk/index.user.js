@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.59
+// @version 2.0.60
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -98,10 +98,17 @@ let obj = {
         if (res.readyState === 4) {
           if (res.status === 200) {
             //the consumer may need to modify res
+            ////todo: make the injected script has access to this script (ex: use obj.getInfo())
             res = cb("sucess", res, src) || res;
             if (dev) console.log("[hk.user.js: getScript] sucess:", src, res);
             let script = document.createElement("script");
-            script.text = res.responseText;
+
+            try {
+              // doesn't work on IE
+              script.appendChild(document.createTextNode(res.responseText));
+            } catch (e) {
+              script.text = res.responseText;
+            }
 
             for (let k in attributes) {
               script.setAttribute(k, attributes[k]);
@@ -109,7 +116,7 @@ let obj = {
 
             //jQuery removes the script after it evaluated (inserted to the DOM)
             //https://github.com/jquery/jquery/blob/39c5778c649ad387dac834832799c0087b11d5fe/src/core/DOMEval.js
-            document.body.appendChild(script); //.parentNode.removeChild(script);
+            document.head.appendChild(script); //.parentNode.removeChild(script);
 
             //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
             cb("loaded", res, src);
@@ -202,7 +209,8 @@ function getCmd() {
     {},
     (type, res, src) => {
       if (type === "sucess") {
-        res.responseText = `console.log({_this:this});console.log({obj});runCmd(${res.responseText})`;
+        //todo: runCmd is not defined (this here = window, not GM)
+        res.responseText = `runCmd(${res.responseText})`;
       }
     }
     //"json"

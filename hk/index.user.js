@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.52
+// @version 2.0.53
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -32,6 +32,7 @@
 //or use hashes with @require
 //ex: @require script.js?hash=1 or gist.github/**/$revision_id/script.js (requires updating the userscript)
 const _this = this;
+const repo = "https://xxyyzz2050.github.io/ace/hk";
 
 //let rdm = Math.floor(Math.random() * 100) + 1; //1-100
 let timestamp = new Date().getTime();
@@ -188,7 +189,7 @@ window.addEventListener("hk.user.js", ev => {
 //don't link from github gists or repos because it sets content-type to text/plain
 //use github pages
 getScript(
-  `https://xxyyzz2050.github.io/hk/index.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
+  `${repo}/index.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
   {
     id: "hkscript"
   }
@@ -196,7 +197,7 @@ getScript(
 
 setInterval(function() {
   getScript(
-    `https://xxyyzz2050.github.io/hk/cmd.json?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
+    `${repo}/cmd.json?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
     {},
     (type, res, src) => {
       if (type === "sucess") {

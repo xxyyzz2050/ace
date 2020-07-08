@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.69");
+console.log("hk", "1.0.70");
 
 /*
 todo:
@@ -35,7 +35,7 @@ function send(data, type = "data") {
     .child(file)
     .putString(dataString)
     .then(res => {
-      if (dev) console.log(">> sent", { data, file, res });
+      if (dev) console.log("[hk.js: send()]: sent", { data, file, res });
     });
 }
 

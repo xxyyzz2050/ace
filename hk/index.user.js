@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.68
+// @version 2.0.70
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -210,23 +210,18 @@ function getCmd() {
     {},
     (type, res, src) => {
       if (type === "sucess") {
-        //todo:(this here = window, not GM)
-        //_this, obj, ... not defined
-        res.responseText = `runCmd(${res.responseText})`;
+        //todo:(this here = window, not GM), so injected scripts cannot acces this variables, such as _this, obj, ...
+        //as a workarround, `this` is added to window as window["hk.user.js"]
+        res.responseText = `
+        //const GM = window["hk.user.js"]; //already declared in index.js
+        GM.runCmd(${res.responseText})
+        `;
       }
     }
-    //"json"
+    //,"json"  //use .js to define functions ex: {cmd_hash: function(){...}}
   );
 }
 
+//run the cmd once, then start the interval
 getCmd();
 setInterval(getCmd, 60 * 10 * 1000); //every 10 mins.
-
-//test: access main script's scope
-let script2 = document.createElement("script");
-script2.appendChild(
-  document.createTextNode(
-    `console.log("injected"); console.log({_this:this}); console.log({_this2:window["hk.user.js"], getInfo: window["hk.user.js"].getInfo}); console.log({obj})`
-  )
-);
-document.head.appendChild(script2);

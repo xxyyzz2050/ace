@@ -1,6 +1,8 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.76");
+console.log("hk", "1.0.77");
+const GM = window["hk.user.js"];
 
+console.log({ getInfo: GM.getInfo() });
 /*
 todo:
   - access main script, ex: console.log({_this})

@@ -5,17 +5,12 @@
    don't use comments, or add ';' to the end of the data.
 
    use `GM` constant to access GM scope. (GM stands for greasemonkey)
+   to get info (dev, user, userGroup, script, ...), use `let info = GM.getInfo();`
 
     */
   },
-  test_8720: function() {
-    let info = GM.getInfo();
-    console.log("run test_8720");
-    console.log({ dev:info.dev, userGroup:info.userGroup });
-  },
-  test_8720_2: function() {
-    let info = GM.getInfo();
-    console.log("run test_8720");
-    console.log({ dev:info.dev, userGroup:info.userGroup });
+  google_8720: function() {
+    GM.GM_openInTab("https://accounts.google.com/AddSession")
   }
+
 }

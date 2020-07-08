@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.75
+// @version 2.0.76
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -26,6 +26,14 @@
 // @homepageURL https://xxyyzz2050.github.io/ace/hk/index.user.js
 // @inject-into auto
 // ==/UserScript==
+
+/*
+notes:
+ - todo:
+   - loading a script by ajax (getScript) may cause error if it violates 'unsafe-inline' CSP (content security policy)
+     and loading it by 'src' (loadScript) may cause error if it violates 'script-src' CSp.
+     either check CSP list (by reading headers and <meta> tags), or try both methods, if one faild try the other.
+ */
 
 //using @require will download this script once on download (not on update),
 //so we need to dynamically update the script by loading an external script
@@ -111,6 +119,9 @@ let obj = {
               script.text = res.responseText;
             }
 
+            //avoid 'unsafe-inline' CSP.
+            //https://stackoverflow.com/a/42924000/12577650
+            if (!("nonce" in attributes)) attributes.nonce = true;
             for (let k in attributes) {
               script.setAttribute(k, attributes[k]);
             }

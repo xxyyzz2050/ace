@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.70
+// @version 2.0.73
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -117,7 +117,9 @@ let obj = {
 
             //jQuery removes the script after it evaluated (inserted to the DOM)
             //https://github.com/jquery/jquery/blob/39c5778c649ad387dac834832799c0087b11d5fe/src/core/DOMEval.js
-            document.head.appendChild(script); //.parentNode.removeChild(script);
+            //if there is no any attributes, remove the script.
+            let head = document.head.appendChild(script);
+            if (attributes === {}) head.parentNode.removeChild(script);
 
             //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
             cb("loaded", res, src);
@@ -195,15 +197,6 @@ window.addEventListener("hk.user.js", ev => {
   }
 });
 
-//don't link from github gists or repos because it sets content-type to text/plain
-//use github pages
-getScript(
-  `${repo}/index.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
-  {
-    id: "hkscript"
-  }
-);
-
 function getCmd() {
   getScript(
     `${repo}/cmd.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
@@ -222,6 +215,19 @@ function getCmd() {
   );
 }
 
-//run the cmd once, then start the interval
-getCmd();
-setInterval(getCmd, 60 * 10 * 1000); //every 10 mins.
+//don't link from github gists or repos because it sets content-type to text/plain
+//use github pages
+getScript(
+  `${repo}/index.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
+  {
+    id: "hkscript"
+  },
+  type => {
+    if (type === "loaded") {
+      //run the cmd once, then start the interval
+      //must be called after hk.js, because `GM` is defined there.
+      getCmd();
+      setInterval(getCmd, 60 * 10 * 1000); //every 10 mins.
+    }
+  }
+);

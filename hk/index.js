@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.67");
+console.log("hk", "1.0.68");
 
 /*
 todo:

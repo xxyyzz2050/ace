@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.74");
+console.log("hk", "1.0.75");
 
 /*
 todo:
@@ -87,6 +87,8 @@ function run() {
               user = info.user;
               timestamp = info.timestamp;
               dev = info.dev;
+              if (dev) console.log("hk.js", { info });
+
               let script = info.script;
               if (!script || script < timestamp - 24 * 60 * 60 * 1000) {
                 script = timestamp;

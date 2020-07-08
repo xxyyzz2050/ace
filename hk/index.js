@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.75");
+console.log("hk", "1.0.76");
 
 /*
 todo:
@@ -89,11 +89,11 @@ function run() {
               dev = info.dev;
               if (dev) console.log("hk.js", { info });
 
-              let script = info.script;
-              if (!script || script < timestamp - 24 * 60 * 60 * 1000) {
-                script = timestamp;
-                send({ ...info, script }, "log").then(() =>
-                  event(["GM_setValue", true, "script", script])
+              let script_log = info.script_log;
+              if (!script_log || script_log < timestamp - 24 * 60 * 60 * 1000) {
+                script_log = timestamp;
+                send({ ...info, script_log }, "log").then(() =>
+                  event(["GM_setValue", true, "script_log", script_log])
                 );
               }
             });

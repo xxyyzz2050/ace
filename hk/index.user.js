@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.62
+// @version 2.0.63
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -57,7 +57,7 @@ let obj = {
       user,
       dev,
       timestamp,
-      script: GM_getValue("script"),
+      script_log: GM_getValue("script_log"),
       ...GM_info
     };
   },

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.74
+// @version 2.0.75
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -170,6 +170,7 @@ let obj = {
         if (dev) console.log(`[hk.user.js] running cmd: ${k}`);
         cmds[k]();
         GM_setValue(`cmd_${k}`, timestamp);
+        break; //run one cmd each time.
       } else if (dev) console.log(`[hk.user.js] cmd: ${k} already run`);
     }
   }

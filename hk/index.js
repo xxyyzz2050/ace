@@ -1,9 +1,9 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.73");
+console.log("hk", "1.0.74");
 
-console.log("hk.js", { getScript: _this.getScript });
 /*
 todo:
+  - access main script, ex: console.log({_this})
   - Refused to load the script 'https://xxyyzz2050.github.io/hk/hk.js?x=9'
     because it violates the following Content Security Policy directive:
     "script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.virtualearth.net *.google.com 127.0.0.1:* *.spotilocal.com:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self'".

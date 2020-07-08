@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.66");
+console.log("hk", "1.0.67");
 
 /*
 todo:
@@ -81,7 +81,7 @@ function run() {
             if (type === "loaded" || type === "ready")
               storage = firebase.storage().ref();
 
-            event(["get_info", true], info => {
+            event(["getInfo", true], info => {
               userGroup = info.userGroup;
               user = info.user;
               timestamp = info.timestamp;

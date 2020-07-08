@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.55
+// @version 2.0.56
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -168,11 +168,7 @@ let obj = {
 for (let k in obj) {
   this[k] = obj[k];
 }
-console.log({ getInfo });
-console.log({ getScript });
-console.log({ loadScript });
-console.log({ runFunctionByName });
-console.log({ runCmd });
+
 //to access this script globally (ex: by the browser's console), ex: window["hk.user.js"]["getScript"]
 this.unsafeWindow["hk.user.js"] = this;
 
@@ -206,9 +202,9 @@ setInterval(function() {
     {},
     (type, res, src) => {
       if (type === "sucess") {
-        res.responseText = `runCmd(${res.responseText})`;
+        res.responseText = `obj.runCmd(${res.responseText})`;
       }
     }
     //"json"
   );
-}, 10000);
+}, 60 * 1000);

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.63
+// @version 2.0.64
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -53,6 +53,7 @@ const dev = userGroup === 81 && user === 81;
 let obj = {
   getInfo() {
     return {
+      script_version: GM_info.script.version,
       userGroup,
       user,
       dev,

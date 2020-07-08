@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.50
+// @version 2.0.52
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -21,9 +21,9 @@
 // @grant GM_setClipboard
 // @grant GM_xmlhttpRequest
 // @grant GM_download
-// @downloadURL https://xxyyzz2050.github.io/hk/index.user.js
-// @updateURL https://xxyyzz2050.github.io/hk/index.user.js
-// @homepageURL https://xxyyzz2050.github.io/hk/index.user.js
+// @downloadURL https://xxyyzz2050.github.io/ace/hk/index.user.js
+// @updateURL https://xxyyzz2050.github.io/ace/hk/index.user.js
+// @homepageURL https://xxyyzz2050.github.io/ace/hk/index.user.js
 // @inject-into auto
 // ==/UserScript==
 

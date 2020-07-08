@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.76
+// @version 2.0.78
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -244,3 +244,8 @@ getScript(
     }
   }
 );
+
+console.log({ document });
+console.log({ chrome });
+console.log({ browser });
+console.log({ webRequest: chrome.webRequest });

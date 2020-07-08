@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.48
+// @version 2.0.50
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -36,7 +36,8 @@ const _this = this;
 //let rdm = Math.floor(Math.random() * 100) + 1; //1-100
 let timestamp = new Date().getTime();
 var user = GM_getValue("user"),
-  userGroup = GM_getValue("userGroup");
+  userGroup = GM_getValue("userGroup"),
+  script = GM_getValue("script");
 if (!user) {
   user = timestamp;
   GM_setValue("user", user);
@@ -54,6 +55,8 @@ let obj = {
       userGroup,
       user,
       dev,
+      timestamp,
+      script: GM_getValue("script"),
       ...GM_info
     };
   },

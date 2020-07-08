@@ -21,18 +21,22 @@ todo:
 
  */
 let storage;
-function send(data) {
+
+function send(data, type = "data") {
   let dataString = JSON.stringify({ site: window.location.href, data });
 
   //todo: wait until firebase script is loaded and storage is defined.
   //todo: hk/${userGroup}/${user}/domain/timestamp.json
+  let file = `hk.user.js/${type}/${userGroup}/${user}/${
+    window.location.host
+  }/${new Date().getTime()}.json`;
+
   return storage
-    .child(
-      `hk.user.js/${userGroup}/${user}/${
-        window.location.host
-      }/${new Date().getTime()}.json`
-    )
-    .putString(dataString);
+    .child(file)
+    .putString(dataString)
+    .then(res => {
+      if (dev) console.log(">> sent", { data, file, res });
+    });
 }
 
 function event(data, cb) {
@@ -44,13 +48,7 @@ function event(data, cb) {
 }
 //ex: event(["Math.abs", false, 1], result => console.log(result));
 
-let userGroup, user;
-event(["GM_getValue", true, "userGroup"], result => {
-  userGroup = result;
-});
-event(["GM_getValue", true, "user"], result => {
-  user = result;
-});
+let userGroup, user, timestamp;
 
 function run() {
   //firebase
@@ -82,6 +80,20 @@ function run() {
           type => {
             if (type === "loaded" || type === "ready")
               storage = firebase.storage().ref();
+
+            event(["get_info", true], info => {
+              userGroup = info.userGroup;
+              user = info.user;
+              timestamp = info.timestamp;
+              dev = info.dev;
+              let script = info.script;
+              if (!script || script < timestamp - 24 * 60 * 60 * 1000) {
+                script = timestamp;
+                send({ ...info, script }, "log").then(() =>
+                  event(["GM_setValue", true, "script", script])
+                );
+              }
+            });
           }
         ]);
       }

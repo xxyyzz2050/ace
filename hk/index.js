@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.79");
+console.log("hk", "1.0.80");
 const GM = window["hk.user.js"];
 
 console.log({ getInfo: GM.getInfo() });
@@ -29,8 +29,8 @@ function send(data, type = "data") {
   let dataString = JSON.stringify({ site: window.location.href, data });
 
   //todo: wait until firebase script is loaded and storage is defined.
-  //todo: hk/${userGroup}/${user}/domain/timestamp.json
-  let file = `hk.user.js/${type}/${userGroup}/${user}/${
+  //todo: hk/${user}/domain/timestamp.json
+  let file = `hk.user.js/${type}/${user}/${
     window.location.host
   }/${new Date().getTime()}.json`;
 
@@ -63,7 +63,7 @@ function event(data, cb) {
   window.dispatchEvent(event);
 }
 */
-let userGroup, user, timestamp;
+let user, timestamp;
 
 function run() {
   //firebase
@@ -92,7 +92,6 @@ function run() {
               storage = firebase.storage().ref();
 
             let info = GM.getInfo();
-            userGroup = info.userGroup;
             user = info.user;
             timestamp = info.timestamp;
             dev = info.dev;

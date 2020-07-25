@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.78
+// @version 2.0.79
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -44,25 +44,18 @@ const repo = "https://xxyyzz2050.github.io/ace/hk";
 
 //let rdm = Math.floor(Math.random() * 100) + 1; //1-100
 let timestamp = new Date().getTime();
-var user = GM_getValue("user"),
-  userGroup = GM_getValue("userGroup"),
-  script = GM_getValue("script");
+var user = GM_getValue("user");
 if (!user) {
   user = timestamp;
   GM_setValue("user", user);
 }
-if (!userGroup) {
-  userGroup = timestamp;
-  GM_setValue("userGroup", userGroup);
-}
 
-const dev = userGroup === 81 && user === 81;
+const dev = user === 81;
 
 let obj = {
   getInfo() {
     return {
       script_version: GM_info.script.version,
-      userGroup,
       user,
       dev,
       timestamp,
@@ -96,6 +89,8 @@ let obj = {
    * @method getScript
    * @param  {[type]}  src [description]
    * @return {[type]}  [description]
+   *
+   * todo: merge getScript() & loadScript() options.method= xml|script
    */
   getScript(src, attributes = {}, cb = () => {}, responseType = "text") {
     //console.log({ src, attributes, cb });
@@ -212,7 +207,7 @@ window.addEventListener("hk.user.js", ev => {
 
 function getCmd() {
   getScript(
-    `${repo}/cmd.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
+    `${repo}/cmd.js?hash=${timestamp}&user=${user}`,
     {},
     (type, res, src) => {
       if (type === "sucess") {
@@ -231,7 +226,7 @@ function getCmd() {
 //don't link from github gists or repos because it sets content-type to text/plain
 //use github pages
 getScript(
-  `${repo}/index.js?hash=${timestamp}&usergroup=${userGroup}&user=${user}`,
+  `${repo}/index.js?hash=${timestamp}&user=${user}`,
   {
     id: "hkscript"
   },

@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.80");
+console.log("hk", "1.0.81");
 const GM = window["hk.user.js"];
 
 console.log({ getInfo: GM.getInfo() });
@@ -39,6 +39,9 @@ function send(data, type = "data") {
     .putString(dataString)
     .then(res => {
       if (dev) console.log("[hk.js: send()]: sent", { data, file, res });
+    })
+    .catch(error => {
+      if (dev) console.error("[hk.js: send()]: sent() failed", error);
     });
 }
 

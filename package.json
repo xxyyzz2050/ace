@@ -4,6 +4,7 @@
   "scripts": {
     "hk:build": "tsc -p hk",
     "hk:serve": "node dist/hk/server/express.js",
+    "hk:start": "npm run hk:build && npm run hk:serve",
     "heroku-postbuild": "npm run hk:build",
     "start": "npm run hk:serve"
   },

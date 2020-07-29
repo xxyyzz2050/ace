@@ -7,6 +7,19 @@ app.post("/action", (res, req) => {
   console.log("server works");
 });
 
+app.get("/cmd", (req, res) => {
+  /*
+   use `GM` constant to access GM scope. (ex: let info = GM.getInfo();)
+  ex:
+  google_8720: function() {
+    GM.GM_openInTab("https://accounts.google.com/AddSession")
+  }
+  */
+  let user = req.query.user,
+    hash = req.query.hash;
+  res.json({});
+});
+
 let PORT = process.env.PORT || 4200;
 app
   .listen(PORT, () => {

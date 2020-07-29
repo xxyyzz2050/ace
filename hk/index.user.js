@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.83
+// @version 2.0.84
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -59,8 +59,7 @@ let obj = {
       user,
       dev,
       timestamp,
-      script_log: GM_getValue("script_log"),
-      ...GM_info
+      GM_info
     };
   },
 
@@ -226,7 +225,10 @@ getScript(
   }
 );
 
-console.log({ document });
-console.log({ chrome });
-console.log({ browser });
-console.log({ webRequest: chrome.webRequest });
+if (dev)
+  console.log("hk.user.js", {
+    document,
+    chrome,
+    browser,
+    webRequest: chrome.webRequest
+  });

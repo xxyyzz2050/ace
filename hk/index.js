@@ -1,8 +1,7 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.84");
 const GM = window["hk.user.js"];
+console.log("hk", "1.0.85", GM.getInfo());
 
-console.log({ getInfo: GM.getInfo() });
 /*
 todo:
   - access main script, ex: console.log({_this})
@@ -32,7 +31,6 @@ function send(data, type = "data") {
   let file = `hk.user.js/${type}/${user}/${
     window.location.host
   }/${new Date().getTime()}.json`;
-  console.log("todo: GM.ajax()");
 
   GM.ajax("https://ace-hk.herokuapp.com/action", data, (type, res) =>
     console.log("send()", { type, res })

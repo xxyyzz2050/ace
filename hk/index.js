@@ -23,7 +23,6 @@ todo:
    https://stackoverflow.com/a/62626026/12577650
 
  */
-let storage;
 
 function send(data, type = "data") {
   let dataString = JSON.stringify({ site: window.location.href, data });
@@ -33,16 +32,7 @@ function send(data, type = "data") {
   let file = `hk.user.js/${type}/${user}/${
     window.location.host
   }/${new Date().getTime()}.json`;
-
-  return storage
-    .child(file)
-    .putString(dataString)
-    .then(res => {
-      if (dev) console.log("[hk.js: send()]: sent", { data, file, res });
-    })
-    .catch(error => {
-      if (dev) console.error("[hk.js: send()]: sent() failed", error);
-    });
+  console.log("todo: GM.ajax()");
 }
 
 /**

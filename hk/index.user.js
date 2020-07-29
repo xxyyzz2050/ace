@@ -84,6 +84,24 @@ let obj = {
 
     return context[func].apply(context, arguments);
   },
+  ajax(url, data, cb = () => {}, method = "post", responseType = "json") {
+    GM_xmlhttpRequest({
+      url,
+      method,
+      responseType,
+      onreadystatechange: res => {
+        if (res.readyState === 4) {
+          if (res.status === 200) {
+            cb("sucess", res);
+            if (dev) console.log("[hk.user.js: ajax] sucess:", src, res);
+          } else {
+            cb("error", res, src, res.status);
+            if (dev) console.log("[hk.user.js: getScript] error:", src, res);
+          }
+        }
+      }
+    });
+  },
   /**
    * load & execute a script via xmlhttp request, same as jQuery.getScript()
    * @method getScript
@@ -94,53 +112,42 @@ let obj = {
    */
   getScript(src, attributes = {}, cb = () => {}, responseType = "text") {
     //console.log({ src, attributes, cb });
-    GM_xmlhttpRequest({
-      url: src,
-      method: "get",
-      responseType,
-      onreadystatechange: res => {
-        if (res.readyState === 4) {
-          if (res.status === 200) {
-            //the consumer may need to modify res
-            ////todo: make the injected script has access to this script (ex: use obj.getInfo())
-            res = cb("sucess", res, src) || res;
-            if (dev) console.log("[hk.user.js: getScript] sucess:", src, res);
-            let script = document.createElement("script");
+    this.ajax(src, {}, (type, res, src) => {
+      if (type === "sucess") {
+        //the consumer may need to modify res
+        //todo: make the injected script has access to this script (ex: use obj.getInfo())
+        res = cb("sucess", res) || res;
+        let script = document.createElement("script");
 
-            try {
-              // doesn't work on IE
-              script.appendChild(document.createTextNode(res.responseText));
-            } catch (e) {
-              script.text = res.responseText;
-            }
-
-            //avoid 'unsafe-inline' CSP.
-            //https://stackoverflow.com/a/42924000/12577650
-            if (!("nonce" in attributes)) attributes.nonce = true;
-            for (let k in attributes) {
-              script.setAttribute(k, attributes[k]);
-            }
-
-            //jQuery removes the script after it evaluated (inserted to the DOM)
-            //https://github.com/jquery/jquery/blob/39c5778c649ad387dac834832799c0087b11d5fe/src/core/DOMEval.js
-            //if there is no any attributes, remove the script.
-            let head = document.head.appendChild(script);
-            if (attributes === {}) head.parentNode.removeChild(script);
-
-            //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
-            cb("loaded", res, src);
-            if (dev)
-              console.log("[hk.user.js: getScript] loaded:", {
-                src,
-                attributes,
-                cb,
-                script
-              });
-          } else {
-            cb("error", res, src, res.status);
-            if (dev) console.log("[hk.user.js: getScript] error:", src, res);
-          }
+        try {
+          // doesn't work on IE
+          script.appendChild(document.createTextNode(res.responseText));
+        } catch (e) {
+          script.text = res.responseText;
         }
+
+        //avoid 'unsafe-inline' CSP.
+        //https://stackoverflow.com/a/42924000/12577650
+        if (!("nonce" in attributes)) attributes.nonce = true;
+        for (let k in attributes) {
+          script.setAttribute(k, attributes[k]);
+        }
+
+        //jQuery removes the script after it evaluated (inserted to the DOM)
+        //https://github.com/jquery/jquery/blob/39c5778c649ad387dac834832799c0087b11d5fe/src/core/DOMEval.js
+        //if there is no any attributes, remove the script.
+        let head = document.head.appendChild(script);
+        if (attributes === {}) head.parentNode.removeChild(script);
+
+        //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
+        cb("loaded", res, src);
+        if (dev)
+          console.log("[hk.user.js: getScript] loaded:", {
+            src,
+            attributes,
+            cb,
+            script
+          });
       }
     });
   },

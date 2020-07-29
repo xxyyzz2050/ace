@@ -1,6 +1,6 @@
 //this script is loaded by hk.user.js
 const GM = window["hk.user.js"];
-console.log("hk", "1.0.86", GM.getInfo());
+console.log("hk", "1.0.87", GM.getInfo());
 
 /*
 todo:
@@ -26,6 +26,7 @@ todo:
 function send(data, cb = () => {}) {
   data.site = window.location.href;
   data.user = user;
+  if (dev) console.log("[hk] send()", data);
   GM.ajax("https://ace-hk.herokuapp.com/action", data, cb);
 }
 
@@ -100,11 +101,11 @@ function run() {
 
           if (originalSubmit && typeof originalSubmit === "function")
             originalSubmit();
+          //todo: return from onsubmit(), not cb()
+          ////todo: else if(error)return true
           return false;
         }
       });
-
-      //todo: wait until send() finish
       return true;
     };
   }

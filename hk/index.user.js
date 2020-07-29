@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.84
+// @version 2.0.85
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -76,7 +76,8 @@ let obj = {
             if (dev) console.log("[hk.user.js: ajax()] sucess:", url);
           } else {
             cb("error", res, url, res.status);
-            if (dev) console.log("[hk.user.js: ajax()] error:", url);
+            if (dev)
+              console.log("[hk.user.js: ajax()] error:", url, res.status, res);
           }
         }
       }

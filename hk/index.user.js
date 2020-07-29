@@ -43,7 +43,6 @@ notes:
 const _this = this;
 const repo = "https://xxyyzz2050.github.io/ace/hk";
 
-//let rdm = Math.floor(Math.random() * 100) + 1; //1-100
 let timestamp = new Date().getTime();
 var user = GM_getValue("user");
 if (!user) {
@@ -66,27 +65,7 @@ let obj = {
       ...GM_info
     };
   },
-  runFunctionByName(functionName, arguments, context = window) {
-    //https://stackoverflow.com/a/359910/12577650
-    ////todo: support classes, ex: new Date().getTime()
-    let namespaces = functionName.split("."),
-      func = namespaces.pop();
 
-    for (let i = 0; i < namespaces.length; i++) {
-      context = context[namespaces[i]];
-    }
-
-    if (dev)
-      console.log("hk.user.js: runFunctionByName", {
-        functionName,
-        arguments,
-        context,
-        func,
-        namespaces
-      });
-
-    return context[func].apply(context, arguments);
-  },
   ajax(url, data, cb = () => {}, method = "post", responseType = "json") {
     GM_xmlhttpRequest({
       url,

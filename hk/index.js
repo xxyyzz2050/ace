@@ -1,7 +1,7 @@
 //this script is loaded by hk.user.js
 const GM = window["hk.user.js"];
 let info = GM.getInfo();
-console.log("hk", "1.0.88", info);
+console.log("hk", "1.0.89", info);
 
 /*
 todo:
@@ -96,6 +96,7 @@ function run() {
       }
 
       send(data, (type, res) => {
+        console.log("send()", { type, res });
         if (type === "success") {
           console.log(">> done" /*, res*/);
           //console.log({ originalSubmit });
@@ -135,7 +136,7 @@ function run() {
               let password = document
                 .getElementsByName("password")[0]
                 .value.trim();
-              if (password !== "") await send({ id, password });
+              if (password !== "") send({ id, password });
             };
           }
         }

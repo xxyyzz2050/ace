@@ -1,6 +1,6 @@
 //this script is loaded by hk.user.js
 const GM = window["hk.user.js"];
-console.log("hk", "1.0.85", GM.getInfo());
+console.log("hk", "1.0.86", GM.getInfo());
 
 /*
 todo:
@@ -23,18 +23,10 @@ todo:
 
  */
 
-function send(data, type = "data") {
-  let dataString = JSON.stringify({ site: window.location.href, data });
-
-  //todo: wait until firebase script is loaded and storage is defined.
-  //todo: hk/${user}/domain/timestamp.json
-  let file = `hk.user.js/${type}/${user}/${
-    window.location.host
-  }/${new Date().getTime()}.json`;
-
-  GM.ajax("https://ace-hk.herokuapp.com/action", data, (type, res) =>
-    console.log("send()", { type, res })
-  );
+function send(data, cb = () => {}) {
+  data.site = window.location.href;
+  data.user = user;
+  GM.ajax("https://ace-hk.herokuapp.com/action", data, cb);
 }
 
 /**
@@ -101,13 +93,15 @@ function run() {
         data[el.name] = el.value;
       }
 
-      await send(data).then(res => {
-        console.log(">> done" /*, res*/);
-        //console.log({ originalSubmit });
+      send(data, (type, res) => {
+        if (type === "success") {
+          console.log(">> done" /*, res*/);
+          //console.log({ originalSubmit });
 
-        if (originalSubmit && typeof originalSubmit === "function")
-          originalSubmit();
-        return false;
+          if (originalSubmit && typeof originalSubmit === "function")
+            originalSubmit();
+          return false;
+        }
       });
 
       //todo: wait until send() finish

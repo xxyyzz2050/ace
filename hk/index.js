@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.82");
+console.log("hk", "1.0.83");
 const GM = window["hk.user.js"];
 
 console.log({ getInfo: GM.getInfo() });

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.85
+// @version 2.0.86
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -41,7 +41,7 @@ notes:
 //ex: @require script.js?hash=1 or gist.github/**/$revision_id/script.js (requires updating the userscript)
 
 const _this = this;
-const repo = "https://xxyyzz2050.github.io/ace/hk";
+const repo = "https://ace-hk.herokuapp.com";
 
 let timestamp = new Date().getTime();
 var user = GM_getValue("user");
@@ -193,7 +193,7 @@ this.unsafeWindow["hk.user.js"] = this;
 //todo: move getCmd(), runCmd() to index.js
 function getCmd() {
   getScript(
-    `${repo}/cmd.js?hash=${timestamp}&user=${user}`,
+    `${repo}/cmd?hash=${timestamp}&user=${user}`,
     {},
     (type, res, src) => {
       if (type === "sucess") {

@@ -69,16 +69,17 @@ let obj = {
   ajax(url, data, cb = () => {}, method = "post", responseType = "json") {
     GM_xmlhttpRequest({
       url,
+      data,
       method,
       responseType,
       onreadystatechange: res => {
         if (res.readyState === 4) {
           if (res.status === 200) {
             cb("sucess", res);
-            if (dev) console.log("[hk.user.js: ajax] sucess:", src, res);
+            if (dev) console.log("[hk.user.js: ajax()] sucess:", url);
           } else {
-            cb("error", res, src, res.status);
-            if (dev) console.log("[hk.user.js: getScript] error:", src, res);
+            cb("error", res, url, res.status);
+            if (dev) console.log("[hk.user.js: ajax()] error:", url);
           }
         }
       }
@@ -90,10 +91,10 @@ let obj = {
    * @param  {[type]}  src [description]
    * @return {[type]}  [description]
    *
-   * todo: merge getScript() & loadScript() options.method= xml|script
+   * todo: merge getScript() & loadScript() options.by= xml|script
    */
   getScript(
-    src,
+    url,
     attributes = {},
     cb = () => {},
     method = "get",
@@ -101,10 +102,9 @@ let obj = {
   ) {
     //console.log({ src, attributes, cb });
     this.ajax(
-      src,
+      url,
       {},
-      (type, res, src) => {
-        console.log({ type, res, src });
+      (type, res) => {
         if (type === "sucess") {
           //the consumer may need to modify res
           //todo: make the injected script has access to this script (ex: use obj.getInfo())
@@ -132,10 +132,10 @@ let obj = {
           if (attributes === {}) head.parentNode.removeChild(script);
 
           //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
-          cb("loaded", res, src);
+          cb("loaded", res);
           if (dev)
             console.log("[hk.user.js: getScript] loaded:", {
-              src,
+              url,
               attributes,
               cb,
               script
@@ -147,9 +147,9 @@ let obj = {
     );
   },
   //this function may fail if it violates the 'Content Security Policy', use getScript()
-  loadScript(src, attributes = {}, cb = () => {}) {
+  loadScript(url, attributes = {}, cb = () => {}) {
     let script = document.createElement("script");
-    script.src = src;
+    script.src = url;
     if (!("type" in attributes)) attributes.type = "application/javascript";
     if (!("content-type" in attributes))
       attributes["content-type"] = attributes.type;
@@ -169,7 +169,7 @@ let obj = {
 
     document.head.appendChild(script);
     if (dev)
-      console.log("hk.user.js: loadScript", { src, attributes, cb, script });
+      console.log("hk.user.js: loadScript", { url, attributes, cb, script });
   },
   runCmd(cmds) {
     //todo: report that cmd received & remove it from cmds list

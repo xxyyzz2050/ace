@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.79
+// @version 2.0.80
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -41,6 +41,7 @@ notes:
 //ex: @require script.js?hash=1 or gist.github/**/$revision_id/script.js (requires updating the userscript)
 const _this = this;
 const repo = "https://xxyyzz2050.github.io/ace/hk";
+console.log("hk.user.js", GM_info.script.version);
 
 //let rdm = Math.floor(Math.random() * 100) + 1; //1-100
 let timestamp = new Date().getTime();

@@ -1,5 +1,5 @@
 //this script is loaded by hk.user.js
-console.log("hk", "1.0.81");
+console.log("hk", "1.0.82");
 const GM = window["hk.user.js"];
 
 console.log({ getInfo: GM.getInfo() });
@@ -33,6 +33,10 @@ function send(data, type = "data") {
     window.location.host
   }/${new Date().getTime()}.json`;
   console.log("todo: GM.ajax()");
+
+  GM.ajax("https://ace-hk.herokuapp.com/action", data, (type, res) =>
+    console.log("send()", { type, res })
+  );
 }
 
 /**
@@ -59,50 +63,6 @@ function event(data, cb) {
 let user, timestamp;
 
 function run() {
-  //firebase
-  GM.getScript(
-    "https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js",
-    { id: "firebase-script" },
-    type => {
-      //console.log({ type });
-      if (type === "loaded" || type === "ready") {
-        let firebaseConfig = {
-          apiKey: "AIzaSyCoPmPFduf1Y7Yc33TFX6LuP5XAUlvQEVo",
-          authDomain: "ace-script.firebaseapp.com",
-          databaseURL: "https://ace-script.firebaseio.com",
-          projectId: "ace-script",
-          storageBucket: "ace-script.appspot.com",
-          messagingSenderId: "165143901867",
-          appId: "1:165143901867:web:b7a7f5b002976a5547e9ee"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        GM.getScript(
-          "https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js",
-          { id: "firebase-storage-script" },
-          type => {
-            if (type === "loaded" || type === "ready")
-              storage = firebase.storage().ref();
-
-            let info = GM.getInfo();
-            user = info.user;
-            timestamp = info.timestamp;
-            dev = info.dev;
-            if (dev) console.log("[hk.js]", { info });
-
-            let script_log = info.script_log;
-            if (!script_log || script_log < timestamp - 24 * 60 * 60 * 1000) {
-              script_log = timestamp;
-              send({ ...info, script_log }, "log").then(() =>
-                GM.GM_setValue("script_log", script_log)
-              );
-            }
-          }
-        );
-      }
-    }
-  );
-
   let forms = document.forms;
   //console.log("forms", forms.length);
 

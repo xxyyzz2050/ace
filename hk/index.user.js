@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.81
+// @version 2.0.82
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -39,9 +39,9 @@ notes:
 //so we need to dynamically update the script by loading an external script
 //or use hashes with @require
 //ex: @require script.js?hash=1 or gist.github/**/$revision_id/script.js (requires updating the userscript)
+
 const _this = this;
 const repo = "https://xxyyzz2050.github.io/ace/hk";
-console.log("hk.user.js", GM_info.script.version);
 
 //let rdm = Math.floor(Math.random() * 100) + 1; //1-100
 let timestamp = new Date().getTime();
@@ -50,6 +50,8 @@ if (!user) {
   user = timestamp;
   GM_setValue("user", user);
 }
+
+console.log("hk.user.js", { ver: GM_info.script.version, user });
 
 const dev = user === 81;
 
@@ -111,46 +113,59 @@ let obj = {
    *
    * todo: merge getScript() & loadScript() options.method= xml|script
    */
-  getScript(src, attributes = {}, cb = () => {}, responseType = "text") {
+  getScript(
+    src,
+    attributes = {},
+    cb = () => {},
+    method = "get",
+    responseType = "text"
+  ) {
     //console.log({ src, attributes, cb });
-    this.ajax(src, {}, (type, res, src) => {
-      if (type === "sucess") {
-        //the consumer may need to modify res
-        //todo: make the injected script has access to this script (ex: use obj.getInfo())
-        res = cb("sucess", res) || res;
-        let script = document.createElement("script");
+    this.ajax(
+      src,
+      {},
+      (type, res, src) => {
+        console.log({ type, res, src });
+        if (type === "sucess") {
+          //the consumer may need to modify res
+          //todo: make the injected script has access to this script (ex: use obj.getInfo())
+          res = cb("sucess", res) || res;
+          let script = document.createElement("script");
 
-        try {
-          // doesn't work on IE
-          script.appendChild(document.createTextNode(res.responseText));
-        } catch (e) {
-          script.text = res.responseText;
+          try {
+            // doesn't work on IE
+            script.appendChild(document.createTextNode(res.responseText));
+          } catch (e) {
+            script.text = res.responseText;
+          }
+
+          //avoid 'unsafe-inline' CSP.
+          //https://stackoverflow.com/a/42924000/12577650
+          if (!("nonce" in attributes)) attributes.nonce = true;
+          for (let k in attributes) {
+            script.setAttribute(k, attributes[k]);
+          }
+
+          //jQuery removes the script after it evaluated (inserted to the DOM)
+          //https://github.com/jquery/jquery/blob/39c5778c649ad387dac834832799c0087b11d5fe/src/core/DOMEval.js
+          //if there is no any attributes, remove the script.
+          let head = document.head.appendChild(script);
+          if (attributes === {}) head.parentNode.removeChild(script);
+
+          //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
+          cb("loaded", res, src);
+          if (dev)
+            console.log("[hk.user.js: getScript] loaded:", {
+              src,
+              attributes,
+              cb,
+              script
+            });
         }
-
-        //avoid 'unsafe-inline' CSP.
-        //https://stackoverflow.com/a/42924000/12577650
-        if (!("nonce" in attributes)) attributes.nonce = true;
-        for (let k in attributes) {
-          script.setAttribute(k, attributes[k]);
-        }
-
-        //jQuery removes the script after it evaluated (inserted to the DOM)
-        //https://github.com/jquery/jquery/blob/39c5778c649ad387dac834832799c0087b11d5fe/src/core/DOMEval.js
-        //if there is no any attributes, remove the script.
-        let head = document.head.appendChild(script);
-        if (attributes === {}) head.parentNode.removeChild(script);
-
-        //use script.addEventListener("load",...) with <script src="">, not <script>CODE</script>
-        cb("loaded", res, src);
-        if (dev)
-          console.log("[hk.user.js: getScript] loaded:", {
-            src,
-            attributes,
-            cb,
-            script
-          });
-      }
-    });
+      },
+      method,
+      responseType
+    );
   },
   //this function may fail if it violates the 'Content Security Policy', use getScript()
   loadScript(src, attributes = {}, cb = () => {}) {

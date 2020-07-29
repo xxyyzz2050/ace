@@ -5,6 +5,7 @@ const app = express();
 
 app.post("/action", (res, req) => {
   console.log("server works");
+  res.json({ ok: true });
 });
 
 app.get("/cmd", (req, res) => {

@@ -192,21 +192,6 @@ for (let k in obj) {
 //to access this script globally (ex: by the browser's console), ex: window["hk.user.js"]["getScript"]
 this.unsafeWindow["hk.user.js"] = this;
 
-window.addEventListener("hk.user.js", ev => {
-  if (ev.detail && ev.detail.data) {
-    //ex: {detail: ["console.log", 1,2,3]}
-    //todo: return value to the consumer
-    ////todo: run functions defined here (not in the injected script)
-    let result = obj.runFunctionByName(
-      ev.detail.data[0],
-      ev.detail.data.slice(2),
-      ev.detail.data.slice(1) ? _this : _this.unsafeWindow
-    );
-    if (ev.detail.cb && typeof ev.detail.cb === "function")
-      ev.detail.cb(result);
-  }
-});
-
 function getCmd() {
   getScript(
     `${repo}/cmd.js?hash=${timestamp}&user=${user}`,

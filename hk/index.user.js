@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.86
+// @version 2.0.87
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/

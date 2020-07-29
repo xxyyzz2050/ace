@@ -7,9 +7,9 @@ const app = express();
 app.get("/", (req, res) => {
   let user = req.query.user,
     hash = req.query.hash;
-  let content = readFileSync("../../../hk/index.js");
+  let content = readFileSync("./hk/index.js");
   console.log({ content });
-  res.send(content);
+  res.send(content.toString());
 });
 
 app.post("/action", (res, req) => {

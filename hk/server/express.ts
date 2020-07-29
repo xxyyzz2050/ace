@@ -1,7 +1,15 @@
 import express from "express";
+import { readFileSync } from "fs";
 
 const dev = process.env.NODE_ENV === "development";
 const app = express();
+
+app.get("/", (req, res) => {
+  let user = req.query.user,
+    hash = req.query.hash;
+  let content = readFileSync("../../../hk/index.js");
+  res.send(content);
+});
 
 app.post("/action", (res, req) => {
   console.log("server works");

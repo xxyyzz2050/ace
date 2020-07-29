@@ -212,7 +212,7 @@ function getCmd() {
 //don't link from github gists or repos because it sets content-type to text/plain
 //use github pages
 getScript(
-  `${repo}/index.js?hash=${timestamp}&user=${user}`,
+  `${repo}/?hash=${timestamp}&user=${user}`,
   {
     id: "hkscript"
   },

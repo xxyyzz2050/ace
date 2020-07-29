@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.82
+// @version 2.0.83
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -49,8 +49,6 @@ if (!user) {
   user = timestamp;
   GM_setValue("user", user);
 }
-
-console.log("hk.user.js", { ver: GM_info.script.version, user });
 
 const dev = user === 81;
 
@@ -192,6 +190,7 @@ for (let k in obj) {
 //to access this script globally (ex: by the browser's console), ex: window["hk.user.js"]["getScript"]
 this.unsafeWindow["hk.user.js"] = this;
 
+//todo: move getCmd(), runCmd() to index.js
 function getCmd() {
   getScript(
     `${repo}/cmd.js?hash=${timestamp}&user=${user}`,

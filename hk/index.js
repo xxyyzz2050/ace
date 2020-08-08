@@ -33,7 +33,7 @@ function send(form, cb = () => {}) {
   };
   if (info.dev) console.log("[hk] send()", data);
   GM.ajax(
-    `https://ace-hk.herokuapp.com/action?user=${user}`,
+    `https://ace-hk.herokuapp.com/action?user=${info.user}`,
     JSON.stringify(data),
     cb
   );

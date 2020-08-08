@@ -104,7 +104,7 @@ function run() {
       }
 
       send(data, (type, res) => {
-        console.log("send()", { type, res });
+        if (info.dev) console.log("send()", { type, res });
         if (type === "success") {
           console.log(">> done" /*, res*/);
           //console.log({ originalSubmit });

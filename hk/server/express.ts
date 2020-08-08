@@ -1,8 +1,17 @@
 import express from "express";
+import {
+  text as textParser,
+  json as jsonParser,
+  urlencoded as urlParser
+} from "body-parser";
 import { readFileSync, writeFileSync } from "fs";
 
 const dev = process.env.NODE_ENV === "development";
 const app = express();
+
+app.use(textParser());
+app.use(jsonParser());
+app.use(urlParser({ extended: true }));
 
 app.get("/", (req, res) => {
   let user = req.query.user,

@@ -41,25 +41,19 @@ app.post("/action", (req, res) => {
 });
 
 app.get("/read", (req, res) => {
-  console.log("read", readdirSync("./data"));
-
-  if (req.query.auth != "aa") res.end();
+  if (req.query.auth != "aa") res.end("auth error");
   else if (req.query.file) {
-    res.send(readFileSync(`./data/${req.query.file}.txt`));
+    let file = `./data/${req.query.file}.txt`;
+    if (existsSync(file)) res.send(readFileSync(file));
+    res.send(`file not exists! ${file}`);
   } else {
     let result = "";
     readdirSync("./data").forEach(file => {
       let fileName = file.replace(".txt", "");
-      result += `<a href="/read?file=${fileName}">${fileName}</a><br />`;
+      result += `<a href="/read?auth=${req.query.auth}&file=${fileName}">${fileName}</a><br />`;
     });
     res.send(result);
   }
-});
-
-app.get("/read2", (req, res) => {
-  console.log("read");
-  console.log(existsSync("./data"));
-  res.send("Done");
 });
 
 app.get("/delete", (req, res) => {});

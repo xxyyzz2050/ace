@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   res.send(content.toString());
 });
 
-app.post("/action", (res, req) => {
+app.post("/action", (req, res) => {
   console.log("server works");
   res.json({ ok: true });
 });

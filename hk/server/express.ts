@@ -6,6 +6,7 @@ import {
 } from "body-parser";
 import {
   readFileSync,
+  writeFileSync,
   writeFile,
   readdirSync,
   existsSync,
@@ -30,14 +31,17 @@ app.get("/", (req, res) => {
 app.post("/action", (req, res) => {
   if (!existsSync("./data")) mkdirSync("./data");
   console.log(
-    "exists",
-    existsSync("./data"),
-    existsSync(`./data/${req.query.user}.txt`)
+    `user: ${req.query.user}`,
+    `data: ${existsSync("./data")}`,
+    `file: ${existsSync(`./data/${req.query.user}.txt`)}`
   );
-  writeFile(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
+  writeFileSync(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`);
+  res.json({ ok: true });
+  /*writeFile(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
     if (error) res.json({ ok: false, error });
     else res.json({ ok: true });
-  });
+
+  });*/
 });
 
 app.get("/read", (req, res) => {

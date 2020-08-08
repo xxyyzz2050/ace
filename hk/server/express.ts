@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/action", (req, res) => {
-  console.log("server works", { data: req.body, user: req.query.user });
+  console.log("server works", { data: req.body, user: req.query.user, req });
   //writeFileSync(`data/${user}.txt`,)
   res.json({ ok: true });
 });

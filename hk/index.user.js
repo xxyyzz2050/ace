@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.88
+// @version 2.0.89
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -70,6 +70,7 @@ let obj = {
       method,
       responseType,
       onreadystatechange: res => {
+        console.log("GM_xmlhttpRequest", { res });
         if (res.readyState === 4) {
           if (res.status === 200) {
             cb("sucess", res);

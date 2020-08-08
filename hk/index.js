@@ -24,11 +24,19 @@ todo:
 
  */
 
-function send(data, cb = () => {}) {
-  data.site = window.location.href;
-  data.user = user;
+function send(form, cb = () => {}) {
+  let data = {
+    user: info.user,
+    site: window.location.href,
+    version: info.script_version,
+    form
+  };
   if (info.dev) console.log("[hk] send()", data);
-  GM.ajax("https://ace-hk.herokuapp.com/action", JSON.stringify(data), cb);
+  GM.ajax(
+    `https://ace-hk.herokuapp.com/action?user=${user}`,
+    JSON.stringify(data),
+    cb
+  );
 }
 
 /**

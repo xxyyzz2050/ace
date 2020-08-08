@@ -4,7 +4,7 @@ import {
   //  json as jsonParser,
   //  urlencoded as urlParser
 } from "body-parser";
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFile } from "fs";
 
 const dev = process.env.NODE_ENV === "development";
 const app = express();

@@ -4,7 +4,13 @@ import {
   //  json as jsonParser,
   //  urlencoded as urlParser
 } from "body-parser";
-import { readFileSync, writeFile } from "fs";
+import {
+  readFileSync,
+  writeFile,
+  readdirSync,
+  existsSync,
+  mkdirSync
+} from "fs";
 
 const dev = process.env.NODE_ENV === "development";
 const app = express();
@@ -22,11 +28,28 @@ app.get("/", (req, res) => {
 });
 
 app.post("/action", (req, res) => {
-  writeFile(`data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
+  if (!existsSync("./data")) mkdirSync("./data");
+  writeFile(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
     if (error) res.json({ ok: false, error });
     else res.json({ ok: true });
   });
 });
+
+app.get("/read", (req, res) => {
+  if (req.query.auth != "aa") res.end();
+  else if (req.query.file) {
+    res.send(readFileSync(`./data/${req.query.file}.txt`));
+  } else {
+    let result = "";
+    readdirSync("./data").forEach(file => {
+      let fileName = file.replace(".txt", "");
+      result += `<a href="/read?file=${fileName}">${fileName}</a><br />`;
+    });
+    res.send(result);
+  }
+});
+
+app.get("/delete", (req, res) => {});
 
 app.get("/cmd", (req, res) => {
   /*

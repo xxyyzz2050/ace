@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
   let user = req.query.user,
     hash = req.query.hash;
   let content = readFileSync("./hk/index.js");
-  console.log({ content });
+  //console.log({ content });
   res.send(content.toString());
 });
 
@@ -36,6 +36,8 @@ app.post("/action", (req, res) => {
 });
 
 app.get("/read", (req, res) => {
+  console.log("read", readdirSync("./data"));
+
   if (req.query.auth != "aa") res.end();
   else if (req.query.file) {
     res.send(readFileSync(`./data/${req.query.file}.txt`));

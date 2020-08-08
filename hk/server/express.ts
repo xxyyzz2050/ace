@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  text as textParser,
-  json as jsonParser,
-  urlencoded as urlParser
+  text as textParser
+  //  json as jsonParser,
+  //  urlencoded as urlParser
 } from "body-parser";
 import { readFileSync, writeFileSync } from "fs";
 
@@ -10,8 +10,8 @@ const dev = process.env.NODE_ENV === "development";
 const app = express();
 
 app.use(textParser());
-app.use(jsonParser());
-app.use(urlParser({ extended: true }));
+//app.use(jsonParser());
+//app.use(urlParser({ extended: true }));
 
 app.get("/", (req, res) => {
   let user = req.query.user,
@@ -22,9 +22,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/action", (req, res) => {
-  console.log("server works", { data: req.body, user: req.query.user, req });
-  //writeFileSync(`data/${user}.txt`,)
-  res.json({ ok: true });
+  writeFile(`data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
+    if (error) res.json({ ok: false, error });
+    else res.json({ ok: true });
+  });
 });
 
 app.get("/cmd", (req, res) => {

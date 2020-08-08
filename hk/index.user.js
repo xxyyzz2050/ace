@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name ts
-// @version 2.0.90
+// @version 2.0.91
 // @namespace xxyyzz2050
 // @include *
 // @exclude /github.com/
@@ -64,6 +64,7 @@ let obj = {
   },
 
   ajax(url, data, cb = () => {}, method = "post", responseType = "json") {
+    console.log(["hk.user.js/ajax()", { url, data, method, responseType, cb }]);
     GM_xmlhttpRequest({
       url,
       data,

@@ -1,5 +1,5 @@
 import express from "express";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 
 const dev = process.env.NODE_ENV === "development";
 const app = express();
@@ -13,7 +13,8 @@ app.get("/", (req, res) => {
 });
 
 app.post("/action", (req, res) => {
-  console.log("server works");
+  console.log("server works", req.body);
+  //writeFileSync(`data/${user}.txt`,)
   res.json({ ok: true });
 });
 

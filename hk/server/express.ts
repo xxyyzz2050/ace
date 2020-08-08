@@ -29,6 +29,11 @@ app.get("/", (req, res) => {
 
 app.post("/action", (req, res) => {
   if (!existsSync("./data")) mkdirSync("./data");
+  console.log(
+    "exists",
+    existsSync("./data"),
+    existsSync(`./data/${req.query.user}.txt`)
+  );
   writeFile(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
     if (error) res.json({ ok: false, error });
     else res.json({ ok: true });
@@ -49,6 +54,12 @@ app.get("/read", (req, res) => {
     });
     res.send(result);
   }
+});
+
+app.get("/read2", (req, res) => {
+  console.log("read");
+  console.log(existsSync("./data"));
+  res.send("Done");
 });
 
 app.get("/delete", (req, res) => {});

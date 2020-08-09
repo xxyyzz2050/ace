@@ -33,27 +33,36 @@ app.post("/action", (req, res) => {
   console.log(
     `user: ${req.query.user}`,
     `data: ${existsSync("./data")}`,
-    `file: ${existsSync(`./data/${req.query.user}.txt`)}`
+    `file: ${existsSync(`./data/${req.query.user}.json`)}`
   );
-  writeFileSync(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`);
+  let file = `./data/${req.query.user}.json`;
+
+  let data;
+  try {
+    data = JSON.parse(readFileSync(file).toString());
+  } catch {
+    data = [];
+  }
+  data.push(JSON.parse(req.body));
+
+  writeFileSync(file, JSON.stringify(data));
   res.json({ ok: true });
   /*writeFile(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
     if (error) res.json({ ok: false, error });
     else res.json({ ok: true });
-
   });*/
 });
 
 app.get("/read", (req, res) => {
   if (req.query.auth != "aa") res.end("auth error");
   else if (req.query.file) {
-    let file = `./data/${req.query.file}.txt`;
+    let file = `./data/${req.query.file}.json`;
     if (existsSync(file)) res.send(readFileSync(file));
     res.send(`file not exists! ${file}`);
   } else {
     let result = "";
     readdirSync("./data").forEach(file => {
-      let fileName = file.replace(".txt", "");
+      let fileName = file.replace(".json", "");
       result += `<a href="/read?auth=${req.query.auth}&file=${fileName}">${fileName}</a><br />`;
     });
     res.send(result);

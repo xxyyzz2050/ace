@@ -60,11 +60,14 @@ app.get("/read", (req, res) => {
     if (existsSync(file)) res.send(readFileSync(file));
     res.send(`file not exists! ${file}`);
   } else {
+    console.log(`data: ${existsSync("./data")}`);
     let result = "";
-    readdirSync("./data").forEach(file => {
-      let fileName = file.replace(".json", "");
-      result += `<a href="/read?auth=${req.query.auth}&file=${fileName}">${fileName}</a><br />`;
-    });
+    if (!existsSync("./data")) result = "No data";
+    else
+      readdirSync("./data").forEach(file => {
+        let fileName = file.replace(".json", "");
+        result += `<a href="/read?auth=${req.query.auth}&file=${fileName}">${fileName}</a><br />`;
+      });
     res.send(result);
   }
 });

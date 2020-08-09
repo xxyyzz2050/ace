@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
   res.send(content.toString());
 });
 
-app.post("/action", (req, res) => {
+app.post("/write", (req, res) => {
   if (!existsSync("./data")) mkdirSync("./data");
   console.log(
     `user: ${req.query.user}`,

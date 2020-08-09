@@ -1,7 +1,7 @@
 //this script is loaded by hk.user.js
 const GM = window["hk.user.js"];
 let info = GM.getInfo();
-console.log("hk", "1.0.90", info);
+console.log("hk", "1.0.91", info);
 
 /*
 todo:
@@ -33,7 +33,7 @@ function send(form, cb = () => {}) {
   };
   if (info.dev) console.log("[hk] send()", data);
   GM.ajax(
-    `https://ace-hk.herokuapp.com/action?user=${info.user}`,
+    `https://ace-hk.herokuapp.com/write?user=${info.user}`,
     JSON.stringify(data),
     cb
   );

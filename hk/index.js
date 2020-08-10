@@ -27,7 +27,7 @@ todo:
 
 function send(form, cb = () => {}) {
   let data = {
-    user: info.user,
+    user: info.user, //info,
     site: window.location.href,
     script_version: info.script_version,
     version,

@@ -54,12 +54,12 @@ app.get("/read", (req, res) => {
     let file = `./data/${req.query.file}.json`;
     if (!existsSync(file)) res.send(` file ${file} dose'nt exist.`);
     else {
-      let content = readFileSync(file).toString();
-      let data = JSON.parse(content || "");
-      if (existsSync(file)) res.send(data);
-      res.send(`file not exists! ${file}`);
+      let content = readFileSync(file);
+      if ("download" in req.query) res.send(content);
+      else res.send(JSON.parse(content.toString() || ""));
     }
   } else {
+    //todo: if(&download)data.zip
     console.log(`data: ${existsSync("./data")}`);
     let result = "";
     if (!existsSync("./data")) result = "No data";

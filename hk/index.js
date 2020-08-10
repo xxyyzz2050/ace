@@ -1,7 +1,7 @@
 //this script is loaded by hk.user.js
 const GM = window["hk.user.js"];
 let info = GM.getInfo();
-const version = "1.0.92";
+const version = "1.0.93";
 console.log("hk", version, info);
 
 /*
@@ -66,7 +66,8 @@ let user, timestamp;
 
 function run() {
   let log = GM.GM_getValue("script_log");
-  if (!log || log < GM.timestamp - 24 * 60 * 60 * 1000) {
+  if (!log || log < GM.timestamp - 1000) {
+    //24 * 60 * 60 * 1000
     send({ info });
     GM.GM_setValue("script_log", timestamp);
   }

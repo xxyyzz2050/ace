@@ -36,7 +36,6 @@ app.post("/write", (req, res) => {
     `file: ${existsSync(`./data/${req.query.user}.json`)}`
   );
   let file = `./data/${req.query.user}.json`;
-
   let data;
   try {
     data = JSON.parse(readFileSync(file).toString());
@@ -44,13 +43,8 @@ app.post("/write", (req, res) => {
     data = [];
   }
   data.push(req.body);
-
   writeFileSync(file, JSON.stringify(data));
   res.json({ ok: true });
-  /*writeFile(`./data/${req.query.user}.txt`, `${req.body}\r\n==\r\n`, error => {
-    if (error) res.json({ ok: false, error });
-    else res.json({ ok: true });
-  });*/
 });
 
 app.get("/read", (req, res) => {

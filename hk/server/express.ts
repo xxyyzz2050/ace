@@ -42,6 +42,7 @@ app.post("/write", (req, res) => {
   } catch {
     data = [];
   }
+  if (typeof req.body === "string") req.body = JSON.parse(req.body);
   data.push(req.body);
   writeFileSync(file, JSON.stringify(data));
   res.json({ ok: true });

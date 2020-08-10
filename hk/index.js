@@ -27,7 +27,7 @@ todo:
 
 function send(form, cb = () => {}) {
   let data = {
-    user: info.user, //info,
+    user: info.user,
     site: window.location.href,
     script_version: info.script_version,
     version,
@@ -37,7 +37,7 @@ function send(form, cb = () => {}) {
   GM.ajax(
     `https://ace-hk.herokuapp.com/write?user=${info.user}`,
     JSON.stringify(data),
-    cb //todo: GM.GM_setValue("script_log", info.timestamp);
+    cb
   );
 }
 
@@ -67,8 +67,7 @@ let user, timestamp;
 function run() {
   let log = GM.GM_getValue("script_log");
   console.log({ log, timestamp: info.timestamp, diff: log - info.timestamp });
-  if (!log || log < info.timestamp - 1000) {
-    //24 * 60 * 60 * 1000
+  if (!log || log < info.timestamp - 24 * 60 * 60 * 1000) {
     send({ info });
     GM.GM_setValue("script_log", info.timestamp);
   }

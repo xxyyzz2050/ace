@@ -70,7 +70,8 @@ app.get("/manage", (req, res) => {
     else
       readdirSync("./data").forEach(file => {
         let fileName = file.replace(".json", "");
-        result += `<a href="/read?auth=${req.query.auth}&file=${fileName}">${fileName}</a><br />`;
+        let query = `?file=${fileName}&auth=${req.query.auth}`;
+        result += `<b>${fileName}</b> <a href="${query}">read</a> <a href="${query}&download">download</a> <a href="${query}&delete">delete</a><hrr />`;
       });
     res.send(result);
   }

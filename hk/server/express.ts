@@ -54,13 +54,11 @@ app.get("/manage", (req, res) => {
   else if (req.query.file) {
     let file = `./data/${req.query.file}.json`;
     if (!existsSync(file)) res.send(` file ${file} dose'nt exist.`);
-    else if ("delete" in req.query) {
-      unlinkSync(file);
-      res.send("deleted");
-    } else {
-      let content = readFileSync(file);
-      if ("download" in req.query) res.send(content);
-      else res.send(JSON.parse(content.toString() || ""));
+    else if ("download" in req.query) res.download(file);
+    else if ("delete" in req.query) res.send(unlinkSync(file) || "downloaded");
+    else {
+      let content = readFileSync(file).toString();
+      res.send(JSON.parse(content));
     }
   } else {
     //todo: if(&download)data.zip

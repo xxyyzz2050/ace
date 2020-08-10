@@ -10,7 +10,8 @@ import {
   writeFile,
   readdirSync,
   existsSync,
-  mkdirSync
+  mkdirSync,
+  unlinkSync
 } from "fs";
 
 const dev = process.env.NODE_ENV === "development";
@@ -48,12 +49,15 @@ app.post("/write", (req, res) => {
   res.json({ ok: true });
 });
 
-app.get("/read", (req, res) => {
+app.get("/manage", (req, res) => {
   if (req.query.auth != "aa") res.end("auth error");
   else if (req.query.file) {
     let file = `./data/${req.query.file}.json`;
     if (!existsSync(file)) res.send(` file ${file} dose'nt exist.`);
-    else {
+    else if ("delete" in req.query) {
+      unlinkSync(file);
+      res.send("deleted");
+    } else {
       let content = readFileSync(file);
       if ("download" in req.query) res.send(content);
       else res.send(JSON.parse(content.toString() || ""));
@@ -71,8 +75,6 @@ app.get("/read", (req, res) => {
     res.send(result);
   }
 });
-
-app.get("/delete", (req, res) => {});
 
 app.get("/cmd", (req, res) => {
   /*

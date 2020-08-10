@@ -57,8 +57,13 @@ app.get("/read", (req, res) => {
   if (req.query.auth != "aa") res.end("auth error");
   else if (req.query.file) {
     let file = `./data/${req.query.file}.json`;
-    if (existsSync(file)) res.send(readFileSync(file).toString());
-    res.send(`file not exists! ${file}`);
+    if (!existsSync(file)) res.send(` file ${file} dose'nt exist.`);
+    else {
+      let content = readFileSync(file).toString();
+      let data = JSON.parse(content || "");
+      if (existsSync(file)) res.send(data);
+      res.send(`file not exists! ${file}`);
+    }
   } else {
     console.log(`data: ${existsSync("./data")}`);
     let result = "";

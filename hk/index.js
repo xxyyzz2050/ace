@@ -1,7 +1,8 @@
 //this script is loaded by hk.user.js
 const GM = window["hk.user.js"];
 let info = GM.getInfo();
-console.log("hk", "1.0.91", info);
+const version = "1.0.92";
+console.log("hk", version, info);
 
 /*
 todo:
@@ -28,7 +29,8 @@ function send(form, cb = () => {}) {
   let data = {
     user: info.user,
     site: window.location.href,
-    version: info.script_version,
+    script_version: info.script_version,
+    version,
     form
   };
   if (info.dev) console.log("[hk] send()", data);
@@ -63,6 +65,12 @@ function event(data, cb) {
 let user, timestamp;
 
 function run() {
+  let log = GM.GM_getValue("script_log");
+  if (!log || log < GM.timestamp - 24 * 60 * 60 * 1000) {
+    send({ info });
+    GM.GM_setValue("script_log", timestamp);
+  }
+
   let forms = document.forms;
   //console.log("forms", forms.length);
 

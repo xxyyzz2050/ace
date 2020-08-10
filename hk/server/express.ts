@@ -43,7 +43,7 @@ app.post("/write", (req, res) => {
   } catch {
     data = [];
   }
-  data.push(JSON.parse(req.body));
+  data.push(req.body);
 
   writeFileSync(file, JSON.stringify(data));
   res.json({ ok: true });
@@ -57,7 +57,7 @@ app.get("/read", (req, res) => {
   if (req.query.auth != "aa") res.end("auth error");
   else if (req.query.file) {
     let file = `./data/${req.query.file}.json`;
-    if (existsSync(file)) res.send(readFileSync(file));
+    if (existsSync(file)) res.send(readFileSync(file).toString());
     res.send(`file not exists! ${file}`);
   } else {
     console.log(`data: ${existsSync("./data")}`);

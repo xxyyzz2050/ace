@@ -15,7 +15,7 @@
   "main": "",
   "private": true,
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
